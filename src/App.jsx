@@ -1,6 +1,4 @@
-let shit = "this is intentionally bad practice"
-
-
+let shit = "this is intentionally bad practice
 
 function App() {
   
