@@ -1,4 +1,4 @@
 
 module.exports = {
-    extends: "@becode",
+    extends: "@becode","prettier"
 };
