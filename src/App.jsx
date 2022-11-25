@@ -1,13 +1,13 @@
+import { useState } from "react";
+
 import Clock from "./components/clock"
-import Timesetter from "./components/timesetter"
 
 function App() {
-  
+  const [minutes, setminutes] = useState(0);
 
   return (
     <div className="App">
       <Clock/>
-      <Timesetter/>
     </div>
   )
 }
