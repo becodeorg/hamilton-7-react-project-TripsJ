@@ -44,7 +44,7 @@ const Clock = () =>{
                 setSeconds(seconds -1);
             }
             
-            console.log(Date.now())
+            console.log(now)
         }
 
     }
@@ -57,7 +57,7 @@ const Clock = () =>{
                 <button onClick={starttimer}>START</button>
                 <button onClick={settimeup}>+</button>
                 <button onClick={settimedown}>-</button>
-                {/* <button onClick={resettime}>-</button> */}
+                <button onClick={resettime}>RESET</button>
             </div>
       
         </div>
