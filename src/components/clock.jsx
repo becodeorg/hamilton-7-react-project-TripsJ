@@ -1,60 +1,90 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const Clock = () =>{
 
-    const [minutes, setMinutes] = useState(0);
-    const [seconds, setSeconds] = useState(0);
+    const [milliseconds, setMilliseconds] = useState(0);
+    // const [starttime,setStarttime] = useState(0);
     const [targettime,setTaregettime]= useState(0);
+    // const [endtime,setEndtime]= useState(0);
+    const clockRef = useRef(0);
+    const [firstUpdate,setFirstUpdate] =useState(false)
+    const [toggle, setToggle] = useState(true);
+    console.log(firstUpdate.current);
 
-    function settimeup(){
-         
+
+
+
+
+    const settimeup = ()=> {
+        console.log("up");
         setTaregettime(targettime+1); 
         // ! First click is not registered
-        setMinutes(targettime);
-        setSeconds(0);
-        console.log(targettime);
+        //console.log(targettime);
     }
 
-    function settimedown(){
+    const settimedown=()=>{
         if (targettime >= 0){ 
+            console.log("down");
         setTaregettime(targettime-1);
-        setMinutes(targettime);
-        setSeconds(0);
-        console.log(targettime);
+        //console.log(targettime);
         }
     }
 
-    function resettime(){
-        setMinutes(targettime);
-        setSeconds(0);
-    }
-
-    function starttimer(){
-        const startpoint = Date.now();
-        const endpoint = (startpoint + (targettime *60 * 1000));
-        let now =0;
-        // console.log(startpoint, endpoint, (targettime *60 * 1000));
-        now = startpoint;
-        let clockMoment = now;
-        while (now < endpoint){
-            now=Date.now()
-            if(now - clockMoment >= 1000 ){
-                clockMoment =now;
-                setSeconds(seconds -1);
-            }
-            
-            console.log(now)
-        }
+    const resettime = ()=>{
+        setMilliseconds(0);
+        setFirstUpdate(false);
+        setMilliseconds(targettime*60*1000);
 
     }
+
+    const starttimer = () => {
+        if (toggle){
+        // setStarttime(Date.now())
+        // setEndtime(starttime + (targettime *60 * 1000));
+        setMilliseconds(targettime*60*1000);
+        setToggle(false);
+        
+    }
+    else { //* Stop button
+        setToggle(true);
+}
+    }
+   // console.log(clockRef.current);
+
+   useEffect(()=>{
+    if(toggle){
+        console.log("toggel exit" + toggle)
+        return;
+    }
+    if(milliseconds === 0 && !toggle ){
+        // TODO Trigger Modal
+        console.log("modal");
+        return;
+    } // Exit condition on timeout
+    if(milliseconds>0 && !toggle){
+        setTimeout(() =>{setMilliseconds(milliseconds-1000);},1000);
+       
+    }
+
+    // else if (milliseconds>0 && toggle){
+    //     setMilliseconds(0);
+    //     setFirstUpdate(false);
+    // } 
+    else{
+        setFirstUpdate(true);
+        return;
+       
+    }
+
+},[milliseconds]);
 
 
     return(
         <div>
-            <p>{minutes}:{seconds}</p>
+            <p className="Clock" ref={clockRef}>{milliseconds/1000}</p>
             <div>
-                <button onClick={starttimer}>START</button>
+                <button onClick={starttimer}>{toggle ? "START":"STOP"}</button>
                 <button onClick={settimeup}>+</button>
                 <button onClick={settimedown}>-</button>
                 <button onClick={resettime}>RESET</button>
