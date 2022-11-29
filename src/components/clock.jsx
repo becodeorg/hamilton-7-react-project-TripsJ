@@ -1,7 +1,8 @@
+import "./clock.css";
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 
-const Clock = () =>{
+const Clock = (props) =>{
 
     const [milliseconds, setMilliseconds] = useState(0);
     // const [starttime,setStarttime] = useState(0);
@@ -33,7 +34,6 @@ const Clock = () =>{
 
     const resettime = ()=>{
         setMilliseconds(0);
-        setFirstUpdate(false);
         setMilliseconds(targettime*60*1000);
 
     }
@@ -52,6 +52,8 @@ const Clock = () =>{
     }
    // console.log(clockRef.current);
 
+
+
    useEffect(()=>{
     if(toggle){
         console.log("toggel exit" + toggle)
@@ -59,18 +61,14 @@ const Clock = () =>{
     }
     if(milliseconds === 0 && !toggle ){
         // TODO Trigger Modal
-        console.log("modal");
+        props.setShow(true);
         return;
     } // Exit condition on timeout
     if(milliseconds>0 && !toggle){
         setTimeout(() =>{setMilliseconds(milliseconds-1000);},1000);
        
     }
-
-    // else if (milliseconds>0 && toggle){
-    //     setMilliseconds(0);
-    //     setFirstUpdate(false);
-    // } 
+    // TODO Convert Output to show minutes and seconds instead of milliseconds
     else{
         setFirstUpdate(true);
         return;
@@ -81,15 +79,15 @@ const Clock = () =>{
 
 
     return(
-        <div>
-            <p className="Clock" ref={clockRef}>{milliseconds/1000}</p>
-            <div>
-                <button onClick={starttimer}>{toggle ? "START":"STOP"}</button>
-                <button onClick={settimeup}>+</button>
-                <button onClick={settimedown}>-</button>
-                <button onClick={resettime}>RESET</button>
+        <div className="flex h-screen">
+            <p className="Clock m-auto text-neutral-500" ref={clockRef}>{toggle ?`${targettime} : 00` :`${milliseconds/1000}`}</p>
+            <div className="m-auto flex flex-col space-y-4">
+                <button className= "text-neutral-500 p-3.5 rounded-md bg-emerald-600 font-sans text-center" onClick={starttimer}>{toggle ? "START":"STOP"}</button>
+                <button className= "text-neutral-500 p-3.5 rounded-md bg-emerald-600 font-sans text-center" onClick={settimeup}>+</button>
+                <button className= "text-neutral-500 p-3.5 rounded-md bg-emerald-600 font-sans text-center" onClick={settimedown}>-</button>
+                <button className= "text-neutral-500 p-3.5 rounded-md bg-emerald-600 font-sans text-center" onClick={resettime}>RESET</button>
             </div>
-      
+      {/* //? Not liking the repeatig classname = in the buttons too much */}
         </div>
     )
     }

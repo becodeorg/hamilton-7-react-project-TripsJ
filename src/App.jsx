@@ -1,13 +1,16 @@
+import "./App.css";
 import { useState } from "react";
 
 import Clock from "./components/clock"
+import Modal from "./components/modal";
 
 function App() {
-  const [minutes, setminutes] = useState(0);
+  const [show, setShow] = useState(false);
 
   return (
     <div className="App">
-      <Clock/>
+      <Clock setShow={setShow} show={show}/>
+      <Modal show={show}/>
     </div>
   )
 }
