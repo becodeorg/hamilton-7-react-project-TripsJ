@@ -6,6 +6,22 @@ const Modal =(props)=>{
         return null;
     }
 
+    const resettime = ()=>{
+        props.setMilliseconds(0);
+        props.setMilliseconds(props.targettime*60*1000);
+        console.log(props.targettime)
+        props.setShow(!props.show);
+
+    }
+
+    const newtimer = ()=>{
+        props.setMilliseconds(0);
+        props.setTargettime(0);
+        props.setShow(!props.show);
+
+
+    }
+
     return(
         <div className="modal">
             <div className="modal-header">
@@ -13,8 +29,8 @@ const Modal =(props)=>{
                 
             </div>
             <div className="modal-body">
-                <button>Restar</button>
-                <button>New Timer</button>
+                <button className= "text-neutral-800 p-3.5 rounded-md bg-emerald-600 font-sans text-center" onClick={resettime}>Restart</button>
+                <button className= "text-neutral-800 p-3.5 rounded-md bg-emerald-600 font-sans text-center" onClick={newtimer}>New Timer</button>
             </div>
         </div>
     )
