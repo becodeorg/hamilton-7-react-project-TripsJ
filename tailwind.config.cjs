@@ -5,6 +5,7 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily:{sans:["Rubik Mono One"]},
     extend: {},
   },
   plugins: [],

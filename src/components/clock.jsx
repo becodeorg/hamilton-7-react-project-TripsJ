@@ -6,7 +6,7 @@ const Clock = (props) =>{
 
     
     // const [starttime,setStarttime] = useState(0);
-    const [targettime,setTaregettime]= useState(0);
+    
     // const [endtime,setEndtime]= useState(0);
     const clockRef = useRef(0);
     const [firstUpdate,setFirstUpdate] =useState(false)
@@ -20,22 +20,22 @@ const Clock = (props) =>{
 
     const settimeup = ()=> {
         console.log("up");
-        setTaregettime(targettime+1); 
-        // ! First click is not registered
+        props.setTargettime(props.targettime+1); 
+    
         //console.log(targettime);
     }
 
     const settimedown=()=>{
-        if (targettime >= 0){ 
+        if (props.targettime >= 0){ 
             console.log("down");
-        setTaregettime(targettime-1);
+        props.setTargettime(props.targettime-1);
         //console.log(targettime);
         }
     }
 
     const resettime = ()=>{
         props.setMilliseconds(0);
-        props.setMilliseconds(targettime*60*1000);
+        props.setMilliseconds(props.targettime*60*1000);
 
     }
 
@@ -43,7 +43,7 @@ const Clock = (props) =>{
         if (toggle){
         // setStarttime(Date.now())
         // setEndtime(starttime + (targettime *60 * 1000));
-        props.setMilliseconds(targettime*60*1000);
+        props.setMilliseconds(props.targettime*60*1000);
         setToggle(false);
         
     }
@@ -53,6 +53,13 @@ const Clock = (props) =>{
     }
    // console.log(clockRef.current);
 
+   function convertToTime(ms) {
+    let seconds = Math.floor(ms / 1000);
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+
+    return `${minutes}:${seconds}`;
+}
 
 
    useEffect(()=>{
@@ -63,6 +70,8 @@ const Clock = (props) =>{
     if(props.milliseconds === 0 && !toggle ){
         // TODO Trigger Modal
         props.setShow(true);
+        // setToggle(true);
+        // props.setTaregettime(0);
         return;
     } // Exit condition on timeout
     if(props.milliseconds>0 && !toggle){
@@ -81,7 +90,7 @@ const Clock = (props) =>{
 
     return(
         <div className="flex h-screen">
-            <p className="Clock m-auto text-neutral-500" ref={clockRef}>{toggle ?`${targettime} : 00` :`${props.milliseconds/1000}`}</p>
+            <p className="Clock font-sans text-xl m-auto text-neutral-500" ref={clockRef}>{toggle ?`${props.targettime} : 00` :`${convertToTime(props.milliseconds)}`}</p>
             <div className="m-auto flex flex-col space-y-4">
                 <button className= {toggle ? basicButtonlayout:redButtonlayout} onClick={starttimer}>{toggle ? "START":"STOP"}</button>
                 <button className= {basicButtonlayout} onClick={settimeup}>+</button>
