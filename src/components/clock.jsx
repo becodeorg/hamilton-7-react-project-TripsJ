@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 
 const Clock = (props) =>{
 
-    const [milliseconds, setMilliseconds] = useState(0);
+    
     // const [starttime,setStarttime] = useState(0);
     const [targettime,setTaregettime]= useState(0);
     // const [endtime,setEndtime]= useState(0);
@@ -12,7 +12,8 @@ const Clock = (props) =>{
     const [firstUpdate,setFirstUpdate] =useState(false)
     const [toggle, setToggle] = useState(true);
     console.log(firstUpdate.current);
-
+    const basicButtonlayout = "text-neutral-800 p-3.5 rounded-md bg-emerald-600 font-sans text-center";
+    const redButtonlayout = "text-neutral-800 p-3.5 rounded-md bg-red-600 font-sans text-center";
 
 
 
@@ -33,8 +34,8 @@ const Clock = (props) =>{
     }
 
     const resettime = ()=>{
-        setMilliseconds(0);
-        setMilliseconds(targettime*60*1000);
+        props.setMilliseconds(0);
+        props.setMilliseconds(targettime*60*1000);
 
     }
 
@@ -42,7 +43,7 @@ const Clock = (props) =>{
         if (toggle){
         // setStarttime(Date.now())
         // setEndtime(starttime + (targettime *60 * 1000));
-        setMilliseconds(targettime*60*1000);
+        props.setMilliseconds(targettime*60*1000);
         setToggle(false);
         
     }
@@ -59,13 +60,13 @@ const Clock = (props) =>{
         console.log("toggel exit" + toggle)
         return;
     }
-    if(milliseconds === 0 && !toggle ){
+    if(props.milliseconds === 0 && !toggle ){
         // TODO Trigger Modal
         props.setShow(true);
         return;
     } // Exit condition on timeout
-    if(milliseconds>0 && !toggle){
-        setTimeout(() =>{setMilliseconds(milliseconds-1000);},1000);
+    if(props.milliseconds>0 && !toggle){
+        setTimeout(() =>{props.setMilliseconds(props.milliseconds-1000);},1000);
        
     }
     // TODO Convert Output to show minutes and seconds instead of milliseconds
@@ -75,17 +76,17 @@ const Clock = (props) =>{
        
     }
 
-},[milliseconds]);
+},[props.milliseconds]);
 
 
     return(
         <div className="flex h-screen">
-            <p className="Clock m-auto text-neutral-500" ref={clockRef}>{toggle ?`${targettime} : 00` :`${milliseconds/1000}`}</p>
+            <p className="Clock m-auto text-neutral-500" ref={clockRef}>{toggle ?`${targettime} : 00` :`${props.milliseconds/1000}`}</p>
             <div className="m-auto flex flex-col space-y-4">
-                <button className= "text-neutral-500 p-3.5 rounded-md bg-emerald-600 font-sans text-center" onClick={starttimer}>{toggle ? "START":"STOP"}</button>
-                <button className= "text-neutral-500 p-3.5 rounded-md bg-emerald-600 font-sans text-center" onClick={settimeup}>+</button>
-                <button className= "text-neutral-500 p-3.5 rounded-md bg-emerald-600 font-sans text-center" onClick={settimedown}>-</button>
-                <button className= "text-neutral-500 p-3.5 rounded-md bg-emerald-600 font-sans text-center" onClick={resettime}>RESET</button>
+                <button className= {toggle ? basicButtonlayout:redButtonlayout} onClick={starttimer}>{toggle ? "START":"STOP"}</button>
+                <button className= {basicButtonlayout} onClick={settimeup}>+</button>
+                <button className= {basicButtonlayout} onClick={settimedown}>-</button>
+                <button className= {basicButtonlayout} onClick={resettime}>RESET</button>
             </div>
       {/* //? Not liking the repeatig classname = in the buttons too much */}
         </div>
